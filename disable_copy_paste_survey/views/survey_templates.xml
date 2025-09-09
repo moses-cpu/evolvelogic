@@ -1,0 +1,16 @@
+<odoo>
+    <!--
+    <template id="survey_disable_copy_paste" inherit_id="survey.survey_fill_form">
+        <xpath expr="//form" position="inside">
+            <t t-call-assets="web.assets_frontend" />
+        </xpath>
+    </template>
+    -->
+    <template id="assets_frontend" inherit_id="web.frontend_layout">
+        <xpath expr="." position="inside">
+            <script type="text/javascript" src="/disable_copy_paste_survey/static/src/js/disable_copy_paste.js"/>
+        </xpath>
+    </template>
+    
+</odoo>
+

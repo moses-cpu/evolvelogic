@@ -1,0 +1,37 @@
+document.addEventListener('DOMContentLoaded', function () {
+    function disableCopyPaste() {
+        document.querySelectorAll('.o_survey_form input, .o_survey_form textarea').forEach(function (element) {
+            element.addEventListener('copy', function (e) {
+                e.preventDefault();
+                alert("Copy-Paste is disabled for this assessment.");
+            });
+            element.addEventListener('paste', function (e) {
+                e.preventDefault();
+                alert("Copy-Paste is disabled for this assessment.");
+            });
+            element.addEventListener('cut', function (e) {
+                e.preventDefault();
+                alert("Copy-Paste is disabled for this assessment.");
+            });
+        });
+
+        document.addEventListener('contextmenu', function (e) {
+            e.preventDefault();
+            alert("Right-click is disabled for this assessment.");
+        });
+
+        document.addEventListener('keydown', function (e) {
+            if ((e.ctrlKey || e.metaKey) && (e.key === 'c' || e.key === 'v' || e.key === 'x' || e.key === 'a')) {
+                e.preventDefault();
+                alert("Copy-Paste is disabled for this assessment.");
+            }
+        });
+    }
+    function detectFocusLoss() {
+        window.addEventListener('blur', function () {
+            alert("Warning: You switched tabs or minimized the window. This may be considered suspicious behavior.");
+        });
+    }
+    disableCopyPaste();
+    detectFocusLoss();
+});

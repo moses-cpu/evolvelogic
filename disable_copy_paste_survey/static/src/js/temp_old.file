@@ -1,0 +1,80 @@
+document.addEventListener('DOMContentLoaded', function () {
+    function requestFullScreen() {
+        var elem = document.documentElement;
+        if (elem.requestFullscreen) {
+            elem.requestFullscreen();
+        } else if (elem.mozRequestFullScreen) {
+            elem.mozRequestFullScreen();
+        } else if (elem.webkitRequestFullscreen) {
+            elem.webkitRequestFullscreen();
+        } else if (elem.msRequestFullscreen) {
+            elem.msRequestFullscreen();
+        }
+    }
+
+    function disableCopyPaste() {
+        document.querySelectorAll('.o_survey_form input, .o_survey_form textarea').forEach(function (element) {
+            element.addEventListener('copy', function (e) {
+                e.preventDefault();
+                alert("Copy-Paste is disabled for this assessment.");
+            });
+            element.addEventListener('paste', function (e) {
+                e.preventDefault();
+                alert("Copy-Paste is disabled for this assessment.");
+            });
+            element.addEventListener('cut', function (e) {
+                e.preventDefault();
+                alert("Copy-Paste is disabled for this assessment.");
+            });
+        });
+    }
+
+    function detectFocusLoss() {
+        window.addEventListener('blur', function () {
+            alert("Warning: You switched tabs or minimized the window. This may be considered suspicious behavior.");
+        });
+    }
+
+    function startVideoCapture() {
+        navigator.mediaDevices.getUserMedia({ video: true }).then(function (stream) {
+            var mediaRecorder = new MediaRecorder(stream);
+            var chunks = [];
+
+            mediaRecorder.ondataavailable = function (event) {
+                chunks.push(event.data);
+            };
+
+            mediaRecorder.onstop = function () {
+                var blob = new Blob(chunks, { type: 'video/webm' });
+                var reader = new FileReader();
+                reader.readAsDataURL(blob);
+                reader.onloadend = function () {
+                    var base64data = reader.result.split(',')[1];
+                    fetch('/survey/video_capture', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ video_data: base64data, filename: 'survey_video_' + Date.now() + '.webm' })
+                    }).then(response => {
+                        console.log("Video successfully uploaded.");
+                    }).catch(error => {
+                        console.error("Error uploading video:", error);
+                    });
+                };
+            };
+
+            mediaRecorder.start();
+            setTimeout(function () {
+                mediaRecorder.stop();
+            }, 30000); // Stop recording after 30 seconds
+        }).catch(function (error) {
+            console.error("Error accessing webcam: ", error);
+            alert("Webcam access is required for this assessment.");
+        });
+    }
+
+    // Run functions
+    requestFullScreen();
+    disableCopyPaste();
+    detectFocusLoss();
+    startVideoCapture();
+});

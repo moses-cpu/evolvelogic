@@ -1,0 +1,2 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_disable_copy_paste_survey_disable_copy_paste_survey,disable_copy_paste_survey.disable_copy_paste_survey,model_disable_copy_paste_survey_disable_copy_paste_survey,base.group_user,1,1,1,1

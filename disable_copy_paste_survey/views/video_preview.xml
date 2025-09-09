@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates>
+    <t t-name="VideoWidget" owl="1">
+        <div>
+            <video width="320" height="240" controls="">
+                <source src="" type="video/mp4"/>
+            </video>
+        </div>
+    </t>
+</templates>
